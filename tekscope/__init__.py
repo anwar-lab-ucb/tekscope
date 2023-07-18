@@ -58,7 +58,7 @@ class Oscilloscope:
         raw.send_command(self.soc, raw.curve_cmd())
         return parse.parse_ribinary_seq(raw.query_binary(self.soc), 1)
 
-    def retrieve_waveform(self, source: str) -> [int]:
+    def retrieve_waveform(self, source: str):
         """
         Retrieves a waveform from the oscilloscope.
         """
