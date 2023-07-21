@@ -2,6 +2,7 @@
 Types and utilities for storing and interacting with waveforms in memory.
 """
 
+import numpy as np
 
 # pylint: disable-next=too-few-public-methods
 class WaveformMetadata:
@@ -35,37 +36,31 @@ class Waveform:
     Class for storing a waveform in memory.
     """
 
-    def __init__(self, channel: str, metadata: WaveformMetadata, raw_data: [int]):
+    def __init__(self, channel: str, metadata: WaveformMetadata, raw_data):
         """
         Initializes a `Waveform` object.
 
         `channel`: The channel (e.g. "CH1") associated with the data.
-        `raw_data`: Raw digitized values from the oscilloscope.
+        `raw_data`: Raw digitized values from the oscilloscope as a numpy array.
         `metadata`: Waveform metadata describing the relationship between
             digitizing levels and actual time/voltage values.
         """
         self.channel = channel
         self.metadata = metadata
-        self.raw_data = raw_data
+        self.raw_data = np.array(raw_data)
 
-    def time(self) -> [float]:
+    def time(self):
         """
-        Returns an array of timestamps corresponding to each datapoint.
+        Returns a numpy array of timestamps corresponding to each datapoint.
+        """
+        return self.metadata.t_zero + self.metadata.t_incr * np.arange(len(self.raw_data))
+
+    def voltage(self):
+        """
+        Returns a numpy array of voltage values corresponding to each datapoint.
         """
         metadata = self.metadata
-        return [
-            metadata.t_zero + metadata.t_incr * i for i in range(len(self.raw_data))
-        ]
-
-    def voltage(self) -> [float]:
-        """
-        Returns an array of voltage values corresponding to each datapoint.
-        """
-        metadata = self.metadata
-        return [
-            metadata.v_mult * (raw_point - metadata.v_off) + metadata.v_zero
-            for raw_point in self.raw_data
-        ]
+        return metadata.v_mult * (self.raw_data - metadata.v_off) + metadata.v_zero
 
 
 class Waveforms:

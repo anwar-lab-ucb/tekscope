@@ -84,7 +84,7 @@ def retrieve_waveform_with_default_settings(
     metadata = get_waveform_metadata(soc)
     if metadata is None:
         return None
-    raw_data = parse_ribinary_seq(get_curve(soc), 1)
+    raw_data = parse_ribinary_seq(get_curve(soc))
     return Waveform(source, metadata, raw_data)
 
 
