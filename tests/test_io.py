@@ -19,11 +19,11 @@ def test_write_and_read_waveforms():
     file = io.BytesIO()
 
     metadata1 = WaveformMetadata(1.6e-9, -504e-6, 20e-3, -125, 0)
-    raw_data1 = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+    raw_data1 = np.arange(-8, 9)
     wf1 = Waveform("CH1", metadata1, raw_data1)
 
     metadata2 = WaveformMetadata(1.6e-9, -504e-6, 80e-3, 0, 0)
-    raw_data2 = np.array([8, 7, 6, 5, 4, 3, 2, 1])
+    raw_data2 = np.arange(8, -9, -1)
     wf2 = Waveform("CH2", metadata2, raw_data2)
 
     waveforms = Waveforms([wf1, wf2])
@@ -57,11 +57,11 @@ def test_save_and_load_waveforms():
     Test the `write_waveforms` and `read_waveforms` functions.
     """
     metadata1 = WaveformMetadata(1.6e-9, -504e-6, 20e-3, -125, 0)
-    raw_data1 = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+    raw_data1 = np.arange(-8, 9)
     wf1 = Waveform("CH1", metadata1, raw_data1)
 
     metadata2 = WaveformMetadata(1.6e-9, -504e-6, 80e-3, 0, 0)
-    raw_data2 = np.array([8, 7, 6, 5, 4, 3, 2, 1])
+    raw_data2 = np.arange(8, -9, -1)
     wf2 = Waveform("CH2", metadata2, raw_data2)
 
     waveforms = Waveforms([wf1, wf2])
