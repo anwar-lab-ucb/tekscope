@@ -3,10 +3,11 @@ Utilities for saving oscilloscope data to disk.
 """
 
 import struct
+import numpy as np
 
 from .waveform import WaveformMetadata, Waveform, Waveforms
 
-
+# TODO: Currently only works if raw datapoints are 8 bits long.
 def write_waveform(file, waveform: Waveform):
     """
     Save a single waveform to an IO stream.
@@ -59,6 +60,7 @@ def save_waveforms(waveforms: Waveforms, path: str):
         write_waveforms(file, waveforms)
 
 
+# TODO: Currently only works if raw datapoints are 8 bits long.
 def read_waveform(file) -> Waveform:
     """
     Loads first waveform in file.
@@ -79,9 +81,7 @@ def read_waveform(file) -> Waveform:
     raw_data_len = struct.unpack("<Q", file.read(struct.calcsize("<Q")))[0]
 
     raw_data_fmt = f"<{raw_data_len}b"
-    raw_data = list(
-        map(int, struct.unpack(raw_data_fmt, file.read(struct.calcsize(raw_data_fmt))))
-    )
+    raw_data = np.array(struct.unpack(raw_data_fmt, file.read(struct.calcsize(raw_data_fmt))), dtype=np.int8)
 
     return Waveform(
         channel, WaveformMetadata(t_incr, t_zero, v_mult, v_off, v_zero), raw_data
