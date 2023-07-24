@@ -12,5 +12,5 @@ setup(
     entry_points={
         "console_scripts": ["tekscope=apps.cli:main"],
     },
-    install_requires=["matplotlib", "argparse"],
+    install_requires=["matplotlib", "argparse", "numpy"],
 )
